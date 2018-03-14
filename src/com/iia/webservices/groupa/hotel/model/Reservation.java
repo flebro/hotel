@@ -6,7 +6,7 @@ public class Reservation {
 private LocalDate dateDebut;
 private LocalDate dateFin;
 private Hotel hotel;
-
+	
 public LocalDate getDateDebut() {
 	return dateDebut;
 }
