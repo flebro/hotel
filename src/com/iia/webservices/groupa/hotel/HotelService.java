@@ -8,9 +8,7 @@ import javax.ws.rs.core.Response;
 public class HotelService {
 
 	@GET @Path("/")
-	public Response testHotel(){
-		System.out.println("test ok");
-
+	public Response listeHotel(){
 		return Response.ok().build();
 	}
 }
