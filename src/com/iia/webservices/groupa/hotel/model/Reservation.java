@@ -16,8 +16,6 @@ public class Reservation {
 	@JsonSerialize(using = CustomLocalDateSerializer.class)  
 	private LocalDate dateFin;
 	private Hotel hotel;
-	// création d'une variable hotel ne contenant que l'id
-	private int  hotelId;
 
 	public LocalDate getDateDebut() {
 		return dateDebut;
@@ -38,10 +36,10 @@ public class Reservation {
 		this.hotel = hotel;
 	}
 	
-	public Reservation(String dateDebut, String dateFin, int id) {
-		this.dateDebut= LocalDateUtil.parse(dateDebut);
-	    this.dateFin=LocalDateUtil.parse(dateFin);
-		hotelId=id;			
+	public Reservation(LocalDate dateDebut, LocalDate dateFin,Hotel hotel) {
+		this.dateDebut= dateDebut;
+	    this.dateFin=dateFin;
+		this.hotel=hotel;	
 	}
 
 }

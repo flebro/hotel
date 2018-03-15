@@ -14,8 +14,8 @@ public interface DataAccess {
 	
 	List<Hotel> listHotelsDisponibles(LocalDate dateDebut, LocalDate dateFin);
 	
-	List<Reservation> listReservations();
-	
 	Hotel getHotel(int idHotel);
+
+	List<Reservation> listReservations(LocalDate Date, Hotel hotel);
 
 }
