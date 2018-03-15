@@ -2,31 +2,35 @@ package com.iia.webservices.groupa.hotel.data;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Singleton;
 
 import com.iia.webservices.groupa.hotel.model.Hotel;
 import com.iia.webservices.groupa.hotel.model.Reservation;
+import com.iia.webservices.groupa.hotel.model.Utilisateur;
 
 @ApplicationScoped
 public class MemoryDataAccess implements DataAccess, Serializable {
 
 	private static final long serialVersionUID = -6844150364243779383L;
 	
-	private final Set<Hotel> _hotels;
-	private final Set<Reservation> _reservations;
+	private Set<Hotel> _hotels;
+	private Set<Reservation> _reservations;
+	private Set<Utilisateur> _users;
 	
-	public MemoryDataAccess() {
+	@PostConstruct
+	public void init() {
 		// Init
 		_hotels = new HashSet<>();
 		_reservations = new HashSet<>();
+		_users = new HashSet<>();
 		// Creation des données de base
 		load();
 	}
@@ -38,6 +42,8 @@ public class MemoryDataAccess implements DataAccess, Serializable {
 		_hotels.add(new Hotel("L'auberge rouge",4));
 		_hotels.add(new Hotel("Le Carlton",5));
 		_hotels.add(new Hotel("Sofitel",6));
+		
+		_users.add(new Utilisateur("groupb", "1234"));
 	}
 
 	@Override
@@ -77,5 +83,10 @@ public class MemoryDataAccess implements DataAccess, Serializable {
 		}
 		return resultat;
 
+	}
+
+	@Override
+	public Utilisateur getUtilisateur(String userName, String password) {
+		return _users.stream().filter(u -> u.getUserName().equals(userName) && u.getPassword().equals(password)).findAny().get();
 	}
 }
