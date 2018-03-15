@@ -3,6 +3,7 @@ package com.iia.webservices.groupa.hotel.data;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.iia.webservices.groupa.hotel.data.exception.DateIndisponibleException;
 import com.iia.webservices.groupa.hotel.model.Hotel;
 import com.iia.webservices.groupa.hotel.model.Reservation;
 import com.iia.webservices.groupa.hotel.model.Utilisateur;
@@ -11,7 +12,7 @@ public interface DataAccess {
 	
 	Utilisateur getUtilisateur(String userName, String password);
 	
-	void addReservation(Reservation reservation);
+	void addReservation(Reservation reservation) throws DateIndisponibleException;
 	
 	List<Hotel> listHotels();
 	

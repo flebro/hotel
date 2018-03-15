@@ -2,8 +2,6 @@ package com.iia.webservices.groupa.hotel.model;
 
 import java.time.LocalDate;
 
-import com.iia.webservices.groupa.hotel.utils.LocalDateUtil;
-
 public class Reservation { 
 	private LocalDate dateDebut;
 	private LocalDate dateFin;
@@ -33,5 +31,13 @@ public class Reservation {
 	    this.dateFin=dateFin;
 		this.hotel=hotel;	
 	}
+	
+	public boolean chevauche(Reservation autreReservation) {
+		return chevauche(autreReservation.getDateDebut(), autreReservation.getDateFin());
+	}
 
+	public boolean chevauche(LocalDate dateDebut, LocalDate dateFin) {
+		return dateFin.isAfter(this.dateDebut) && dateDebut.isBefore(this.dateFin);
+	}
+	
 }

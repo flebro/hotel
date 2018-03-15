@@ -19,6 +19,8 @@ import io.jsonwebtoken.impl.crypto.MacProvider;
 @ApplicationScoped
 public class JwtSecurityService implements SecurityService {
 
+	private static final long TOKEN_VALIDITY_IN_SECONDS = 3600l; 
+	
 	private Key key;
 
 	@PostConstruct
@@ -30,10 +32,12 @@ public class JwtSecurityService implements SecurityService {
 	public String issueToken(Utilisateur utilisateur) {
 		long nowMillis = System.currentTimeMillis();
 		Date now = new Date(nowMillis);
-
+		Date expiration = new Date(nowMillis + (1000 * TOKEN_VALIDITY_IN_SECONDS));
+		
 		return Jwts.builder()
 				.setSubject(utilisateur.getUserName())
 				.setIssuedAt(now)
+				.setExpiration(expiration)
 				.signWith(SignatureAlgorithm.HS512, key)
 				.compact();
 	}

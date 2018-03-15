@@ -3,9 +3,7 @@ package com.iia.webservices.groupa.hotel.dos;
 public class ReservationDemande {
 	private String dateDebDemande;
 	private String dateFinDemande;
-	private int hotelIDDemande;
-	
-	
+	private Integer hotelIDDemande;
 	
 	public String getDateDebDemande() {
 		return dateDebDemande;
@@ -19,10 +17,10 @@ public class ReservationDemande {
 	public void setDateFinDo(String dateFinDemande) {
 		this.dateFinDemande = dateFinDemande;
 	}
-	public int getHotelIDDemande() {
+	public Integer getHotelIDDemande() {
 		return hotelIDDemande;
 	}
-	public void setHotelIDDemande(int hotelIDDemande) {
+	public void setHotelIDDemande(Integer hotelIDDemande) {
 		this.hotelIDDemande = hotelIDDemande;
 	}
 

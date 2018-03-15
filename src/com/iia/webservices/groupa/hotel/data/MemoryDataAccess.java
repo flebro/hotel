@@ -2,36 +2,40 @@ package com.iia.webservices.groupa.hotel.data;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Singleton;
+import javax.inject.Inject;
 
+import com.iia.webservices.groupa.hotel.data.exception.DateIndisponibleException;
 import com.iia.webservices.groupa.hotel.model.Hotel;
 import com.iia.webservices.groupa.hotel.model.Reservation;
-import com.iia.webservices.groupa.hotel.utils.LocalDateUtil;
+import com.iia.webservices.groupa.hotel.model.Utilisateur;
+import com.iia.webservices.groupa.hotel.utils.DateUtil;
 
 @ApplicationScoped
 public class MemoryDataAccess implements DataAccess, Serializable {
 
 	private static final long serialVersionUID = -6844150364243779383L;
 
+	@Inject
+	private DateUtil dateUtil;
+	
 	private List<Hotel> _hotels;
 	private List<Reservation> _reservations;
-	private Set<Utilisateur> _users;
+	private List<Utilisateur> _users;
 	
 	@PostConstruct
 	public void init() {
 		// Init
 		_hotels = new ArrayList<>();
 		_reservations = new ArrayList<>();
-		_users = new HashSet<>();
+		_users = new ArrayList<>();
 		// Creation des donnÃ©es de base
 		load();
 	}
@@ -43,67 +47,14 @@ public class MemoryDataAccess implements DataAccess, Serializable {
 		_hotels.add(new Hotel("L'auberge rouge",4));
 		_hotels.add(new Hotel("Le Carlton",5));
 		_hotels.add(new Hotel("Sofitel",6));
-		_reservations.add(new Reservation(LocalDateUtil.parse("2018-01-30"),LocalDateUtil.parse("2018-02-14"),_hotels.get(1)));
-		_reservations.add(new Reservation(LocalDateUtil.parse("2018-02-30"),LocalDateUtil.parse("2018-03-14"),_hotels.get(1)));
-		_reservations.add(new Reservation(LocalDateUtil.parse("2018-01-15"),LocalDateUtil.parse("2018-02-01"),_hotels.get(3)));
-		_reservations.add(new Reservation(LocalDateUtil.parse("2018-01-18"),LocalDateUtil.parse("2018-02-19"),_hotels.get(4)));
+		_reservations.add(new Reservation(dateUtil.parse("2018-01-30"),dateUtil.parse("2018-02-14"),_hotels.get(1)));
+		_reservations.add(new Reservation(dateUtil.parse("2018-02-30"),dateUtil.parse("2018-03-14"),_hotels.get(1)));
+		_reservations.add(new Reservation(dateUtil.parse("2018-01-15"),dateUtil.parse("2018-02-01"),_hotels.get(3)));
+		_reservations.add(new Reservation(dateUtil.parse("2018-01-18"),dateUtil.parse("2018-02-19"),_hotels.get(4)));
 		
 		_users.add(new Utilisateur("groupb", "1234"));
 	}
-
-	@Override
-	public void addReservation(Reservation reservation) {
-		_reservations.add(reservation);
-	}
-
-	@Override
-	public List<Hotel> listHotels() {
-		return new ArrayList<>(_hotels);
-	}
-
-	@Override
-	public List<Hotel> listHotelsDisponibles(LocalDate dateDebut, LocalDate dateFin) {
-		Set<Hotel> nonDispos = _reservations.stream()
-				.filter(r -> r.getDateDebut().isBefore(dateFin == null ? dateDebut : dateFin) && r.getDateFin().isAfter(dateDebut))
-				.map(Reservation::getHotel)
-				.collect(Collectors.toSet());
-
-		return _hotels.stream().filter(h -> !nonDispos.contains(h)).collect(Collectors.toList());
-	}
-
-	@Override
-	public List<Reservation> listReservations(LocalDate Date,Hotel hotel)
-	{
-
-		//Par défaut on charge toutes les réservations, on allégera cette liste en fonction des critères en paramètre
-		List<Reservation> lesReservations= new ArrayList<Reservation>(_reservations);
-		// boucle pour parcourir chaque résa
-		for (Reservation reservation : _reservations) 
-		{
-			//si l'hôtel est renseigné
-			if(hotel!=null)
-			{
-				if(!reservation.getHotel().equals(hotel)) 
-				{
-					lesReservations.remove(reservation);
-				} 
-			}
-			for (Reservation reservation2 : _reservations) 
-			{
-				//si la date est renseignée
-				if(Date!=null)
-				{ 
-					if(reservation2.getDateDebut().isBefore(Date)||reservation2.getDateFin().isBefore(Date)) 
-					{
-						lesReservations.remove(reservation2);
-					} 
-				}
-			}
-
-		}
-		return lesReservations;
-	}
-
+	
 	@Override
 	public Hotel getHotel(int idHotel) {
 		Hotel resultat = null;
@@ -117,9 +68,61 @@ public class MemoryDataAccess implements DataAccess, Serializable {
 		return resultat;
 
 	}
+	
+	@Override
+	public List<Hotel> listHotels() {
+		return new ArrayList<>(_hotels);
+	}
+	
+	@Override
+	public List<Hotel> listHotelsDisponibles(LocalDate dateDebut, LocalDate dateFin) {
+		Set<Hotel> nonDispos = _reservations.stream()
+				.filter(r -> !r.chevauche(dateDebut, dateFin == null ? dateDebut : dateFin))
+				.map(Reservation::getHotel)
+				.collect(Collectors.toSet());
+
+		return _hotels.stream().filter(h -> !nonDispos.contains(h)).collect(Collectors.toList());
+	}
+
+	@Override
+	public List<Reservation> listReservations(LocalDate date, Hotel hotel)
+	{
+		//Par dÃ©faut on charge toutes les rÃ©servations, on allÃ©gera cette liste en fonction des critï¿½res en paramï¿½tre
+		List<Reservation> lesReservations= new ArrayList<>();
+		// boucle pour parcourir chaque rï¿½sa
+		if (date != null) {
+			for (Reservation reservation : lesReservations) {
+				if(!reservation.chevauche(date, date)) {
+					lesReservations.remove(reservation);
+				}
+			}
+		}
+		
+		if (hotel != null) {
+			for (Reservation reservation : lesReservations) {
+				if(!reservation.getHotel().equals(hotel)) {
+					lesReservations.remove(reservation);
+				}
+			}
+		}
+	
+		return lesReservations;
+	}
+
+	@Override
+	public void addReservation(Reservation reservation) throws DateIndisponibleException {
+		for (Reservation dejaReserve : _reservations) {
+			if (dejaReserve.getHotel().equals(reservation.getHotel()) && dejaReserve.chevauche(reservation) ) {
+				throw new DateIndisponibleException();
+			}
+		}
+		
+		_reservations.add(reservation);
+	}
 
 	@Override
 	public Utilisateur getUtilisateur(String userName, String password) {
 		return _users.stream().filter(u -> u.getUserName().equals(userName) && u.getPassword().equals(password)).findAny().get();
 	}
+	
 }
