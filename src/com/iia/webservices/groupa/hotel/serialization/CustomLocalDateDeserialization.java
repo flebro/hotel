@@ -8,7 +8,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.iia.webservices.groupa.hotel.utils.LocalDateUtil;
-
+@Deprecated
 public class CustomLocalDateDeserialization extends StdDeserializer<LocalDate> {
 
 	private static final long serialVersionUID = 2195502536872458137L;
