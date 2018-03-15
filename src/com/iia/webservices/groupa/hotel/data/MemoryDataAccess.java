@@ -22,14 +22,17 @@ public class MemoryDataAccess implements DataAccess, Serializable {
 
 	private static final long serialVersionUID = -6844150364243779383L;
 
-	private final List<Hotel> _hotels;
-	private final List<Reservation> _reservations;
-
-	public MemoryDataAccess() {
+	private List<Hotel> _hotels;
+	private List<Reservation> _reservations;
+	private Set<Utilisateur> _users;
+	
+	@PostConstruct
+	public void init() {
 		// Init
 		_hotels = new ArrayList<>();
 		_reservations = new ArrayList<>();
-		// Creation des données de base
+		_users = new HashSet<>();
+		// Creation des donnÃ©es de base
 		load();
 	}
 
@@ -44,6 +47,8 @@ public class MemoryDataAccess implements DataAccess, Serializable {
 		_reservations.add(new Reservation(LocalDateUtil.parse("2018-02-30"),LocalDateUtil.parse("2018-03-14"),_hotels.get(1)));
 		_reservations.add(new Reservation(LocalDateUtil.parse("2018-01-15"),LocalDateUtil.parse("2018-02-01"),_hotels.get(3)));
 		_reservations.add(new Reservation(LocalDateUtil.parse("2018-01-18"),LocalDateUtil.parse("2018-02-19"),_hotels.get(4)));
+		
+		_users.add(new Utilisateur("groupb", "1234"));
 	}
 
 	@Override
@@ -111,5 +116,10 @@ public class MemoryDataAccess implements DataAccess, Serializable {
 		}
 		return resultat;
 
+	}
+
+	@Override
+	public Utilisateur getUtilisateur(String userName, String password) {
+		return _users.stream().filter(u -> u.getUserName().equals(userName) && u.getPassword().equals(password)).findAny().get();
 	}
 }

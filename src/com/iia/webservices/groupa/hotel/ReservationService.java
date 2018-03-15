@@ -16,7 +16,7 @@ import com.iia.webservices.groupa.hotel.dos.ReservationDemande;
 import com.iia.webservices.groupa.hotel.model.Reservation;
 import com.iia.webservices.groupa.hotel.utils.LocalDateUtil;
 
-@Path("/reservations")
+@Path("/reservations") @ProtectedResource
 public class ReservationService {
 	
 	@Inject

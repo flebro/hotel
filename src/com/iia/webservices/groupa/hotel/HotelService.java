@@ -9,8 +9,9 @@ import javax.ws.rs.core.Response;
 
 import com.iia.webservices.groupa.hotel.data.DataAccess;
 import com.iia.webservices.groupa.hotel.utils.LocalDateUtil;
+import com.iia.webservices.groupa.hotel.security.ProtectedResource;
 
-@Path("/hotels")
+@Path("/hotels") @ProtectedResource
 public class HotelService {		
 	
 	@Inject

@@ -2,18 +2,10 @@ package com.iia.webservices.groupa.hotel.model;
 
 import java.time.LocalDate;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.iia.webservices.groupa.hotel.serialization.CustomLocalDateDeserialization;
-import com.iia.webservices.groupa.hotel.serialization.CustomLocalDateSerializer;
 import com.iia.webservices.groupa.hotel.utils.LocalDateUtil;
 
-public class Reservation {
-	@JsonDeserialize(using = CustomLocalDateDeserialization.class)  
-	@JsonSerialize(using = CustomLocalDateSerializer.class)  
+public class Reservation { 
 	private LocalDate dateDebut;
-	@JsonDeserialize(using = CustomLocalDateDeserialization.class)  
-	@JsonSerialize(using = CustomLocalDateSerializer.class)  
 	private LocalDate dateFin;
 	private Hotel hotel;
 
