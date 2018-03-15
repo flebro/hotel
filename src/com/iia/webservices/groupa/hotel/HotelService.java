@@ -18,8 +18,12 @@ public class HotelService {
 	@GET 
 	@Path("/")
 	@Produces("application/json")
-	public Response listeHotel(){
-		dataAccess.listHotels();
-		return Response.ok().build();
+	public Response listeHotelDisponible(@QueryParam("dateDeb") String dateDeb,@QueryParam("dateFin") String dateFin){
+		if (dateDeb == null || dateFin== null) {
+			return Response.ok().entity(dataAccess.listHotels()).build();
+		} else {
+			return Response.ok().entity(dataAccess.listHotelsDisponibles(LocalDateUtil.parse(dateDeb), (LocalDateUtil.parse(dateFin)))).build();
+		}
 	}
+
 }

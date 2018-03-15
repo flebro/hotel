@@ -7,7 +7,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.iia.webservices.groupa.hotel.utils.LocalDateUtil;
-
+@Deprecated
 public class CustomLocalDateSerializer extends StdSerializer<LocalDate> {
 	
 	private static final long serialVersionUID = -6696321419784631609L;

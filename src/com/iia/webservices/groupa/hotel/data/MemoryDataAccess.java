@@ -32,12 +32,12 @@ public class MemoryDataAccess implements DataAccess, Serializable {
 	}
 	
 	private void load() {
-		_hotels.add(new Hotel("Au bon accueil"));
-		_hotels.add(new Hotel("Le Ritz"));
-		_hotels.add(new Hotel("Chez flo"));
-		_hotels.add(new Hotel("L'auberge rouge"));
-		_hotels.add(new Hotel("Le Carlton"));
-		_hotels.add(new Hotel("Sofitel"));
+		_hotels.add(new Hotel("Au bon accueil",1));
+		_hotels.add(new Hotel("Le Ritz",2));
+		_hotels.add(new Hotel("Chez flo",3));
+		_hotels.add(new Hotel("L'auberge rouge",4));
+		_hotels.add(new Hotel("Le Carlton",5));
+		_hotels.add(new Hotel("Sofitel",6));
 	}
 
 	@Override
@@ -53,10 +53,10 @@ public class MemoryDataAccess implements DataAccess, Serializable {
 	@Override
 	public List<Hotel> listHotelsDisponibles(LocalDate dateDebut, LocalDate dateFin) {
 		Set<Hotel> nonDispos = _reservations.stream()
-		.filter(r -> r.getDateDebut().isBefore(dateFin == null ? dateDebut : dateFin) && r.getDateFin().isAfter(dateDebut))
-		.map(Reservation::getHotel)
-		.collect(Collectors.toSet());
-		
+				.filter(r -> r.getDateDebut().isBefore(dateFin == null ? dateDebut : dateFin) && r.getDateFin().isAfter(dateDebut))
+				.map(Reservation::getHotel)
+				.collect(Collectors.toSet());
+
 		return _hotels.stream().filter(h -> !nonDispos.contains(h)).collect(Collectors.toList());
 	}
 
@@ -64,5 +64,18 @@ public class MemoryDataAccess implements DataAccess, Serializable {
 	public List<Reservation> listReservations() {
 		return new ArrayList<>(_reservations);
 	}
-		
+
+	@Override
+	public Hotel getHotel(int idHotel) {
+		 Hotel resultat = null;
+		//boucle avec iterator pour parcourir la Hashlist;
+		Iterator<Hotel> it = _hotels.iterator();
+		while(it.next() != null) {
+			// Comparaison dans la boucle if de l'hotel actuel (acc�der � l'id puis la comparer avec la valeur de idHotel)
+			if(it.next().getId()==idHotel)
+				resultat=it.next();
+		}
+		return resultat;
+
+	}
 }
