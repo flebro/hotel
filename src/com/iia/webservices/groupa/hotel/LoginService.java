@@ -25,8 +25,13 @@ public class LoginService {
 	@POST 
 	@Path("/")
 	@Consumes("application/json")
-	@Produces("application/json")
-	public Response ReservationHotel(Credentials credentials){
+	@Produces("text/plain")
+	/**
+	 * Cette methode parmet l'authentification auprès de l'API
+	 * @param credentials objet contenant le username et le password de l'utilisateur
+	 * @return token
+	 */
+	public Response authenticate(Credentials credentials){
 		Utilisateur user = dataAccess.getUtilisateur(credentials.getUsername(), credentials.getPassword());
 		if (user == null) {
 			Response.status(HttpResponseCodes.SC_UNAUTHORIZED).entity("Wrong credentials").build();

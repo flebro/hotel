@@ -1,6 +1,8 @@
 package com.iia.webservices.groupa.hotel;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -15,7 +17,7 @@ import org.jboss.resteasy.util.HttpResponseCodes;
 
 import com.iia.webservices.groupa.hotel.data.DataAccess;
 import com.iia.webservices.groupa.hotel.data.exception.DateIndisponibleException;
-import com.iia.webservices.groupa.hotel.dos.ReservationDemande;
+import com.iia.webservices.groupa.hotel.dos.ReservationDO;
 import com.iia.webservices.groupa.hotel.model.Hotel;
 import com.iia.webservices.groupa.hotel.model.Reservation;
 import com.iia.webservices.groupa.hotel.security.ProtectedResource;
@@ -33,24 +35,24 @@ public class ReservationService {
 	@Path("/")
 	@Consumes("application/json")
 	@Produces("application/json")
-	public Response ReservationHotel(ReservationDemande reservationDemande){
+	public Response ReservationHotel(ReservationDO reservationDemande){
 		// on test chaque param�tre avant de construire notre r�sa
-		if(reservationDemande.getDateDebDemande() == null || 
-				reservationDemande.getDateFinDemande() == null || 
-				reservationDemande.getHotelIDDemande() == null) {
+		if(reservationDemande.getDateDebut() == null || 
+				reservationDemande.getDateFin() == null || 
+				reservationDemande.getHotel() == null) {
 			Response.status(HttpResponseCodes.SC_BAD_REQUEST).entity("You must provide all parameters").build();
 		}
 		
 		LocalDate dateDebutParsed = null;
 		LocalDate dateFinParsed = null;
 		try {
-			dateDebutParsed = dateUtil.parse(reservationDemande.getDateDebDemande());
-			dateFinParsed = dateUtil.parse(reservationDemande.getDateFinDemande());
+			dateDebutParsed = dateUtil.parse(reservationDemande.getDateDebut());
+			dateFinParsed = dateUtil.parse(reservationDemande.getDateFin());
 		} catch (Exception e) {
 			Response.status(HttpResponseCodes.SC_BAD_REQUEST).entity("Dates must be formatted as such : yyyy-MM-dd").build();
 		}
 		
-		Hotel hotel = dataAccess.getHotel(reservationDemande.getHotelIDDemande());
+		Hotel hotel = dataAccess.getHotel(reservationDemande.getHotel().getId());
 		if (hotel == null) {
 			return Response.status(HttpResponseCodes.SC_NOT_FOUND).build();
 		}
@@ -87,7 +89,14 @@ public class ReservationService {
 				Response.status(HttpResponseCodes.SC_BAD_REQUEST).entity("Dates must be formatted as such : yyyy-MM-dd").build();
 			}
 		}
+		
+		List<ReservationDO> resas = new ArrayList<>();
+		for (Reservation reservation : dataAccess.listReservations(date, hotel)) {
+			resas.add(new ReservationDO(dateUtil.format(reservation.getDateDebut()),
+					dateUtil.format(reservation.getDateFin()),
+							reservation.getHotel()));
+		}
 			
-		return Response.ok().entity(dataAccess.listReservations(date, hotel)).build();
+		return Response.ok().entity(resas).build();
 	}
 }

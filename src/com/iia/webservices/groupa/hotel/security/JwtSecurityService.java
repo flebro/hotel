@@ -52,7 +52,7 @@ public class JwtSecurityService implements SecurityService {
 			throw new InvalidTokenException();
 		}
 			Claims claims = parser.parseClaimsJws(token).getBody();
-			if (claims.getExpiration().after(now)) {
+			if (claims.getExpiration().before(now)) {
 				throw new TokenExpiredException();
 			}
 	}
