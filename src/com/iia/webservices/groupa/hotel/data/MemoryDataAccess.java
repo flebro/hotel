@@ -74,7 +74,7 @@ public class MemoryDataAccess implements DataAccess, Serializable {
 	@Override
 	public List<Hotel> listHotelsDisponibles(LocalDate dateDebut, LocalDate dateFin) {
 		Set<Hotel> nonDispos = _reservations.stream()
-				.filter(r -> !r.chevauche(dateDebut, dateFin == null ? dateDebut : dateFin))
+				.filter(r -> r.chevauche(dateDebut, dateFin == null ? dateDebut : dateFin))
 				.map(Reservation::getHotel)
 				.collect(Collectors.toSet());
 
