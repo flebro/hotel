@@ -19,12 +19,25 @@ import com.iia.webservices.groupa.hotel.utils.DateUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.*;
 
 import com.iia.webservices.groupa.hotel.security.ProtectedResource;
 
 @Path("/hotels") @ProtectedResource
 @Produces("application/json")
-@Api(value = "/hotels", description = "Méthodes sur Service Hôtel")
+@Api(value = "/hotels")
+
+
+//@OpenAPIDefinition (info = 
+//@Info(
+//          title = "the title",
+//          version = "0.0",
+//          description = "My API",
+//          license = @License(name = "Apache 2.0", url = "http://foo.bar"),
+//          contact = @Contact(url = "http://gigantic-server.com", name = "Fred", email = "Fred@gigagantic-server.com")
+//  )
+//)
+
 public class HotelService  {		
 	
 	@Inject

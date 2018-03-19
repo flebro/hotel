@@ -40,11 +40,11 @@ public class LoginService {
     notes = "Retourne un token",
     response = Utilisateur.class)
 	/**
-	 * Cette methode parmet l'authentification auprÃ¨s de l'API
+	 * Cette methode parmet l'authentification auprès de l'API
 	 * @param credentials objet contenant le username et le password de l'utilisateur
 	 * @return token
 	 */
-	public Response authenticate(@ApiParam(value = "Credentials objet contenant le username et le password de l'utilisateur.", required = true) Credentials credentials){
+	public Response authenticate(@ApiParam(value = "Credentials objet contenant le username et le password de l'utilisateur.'groupb','1234'", required = true) Credentials credentials){
 		Utilisateur user = dataAccess.getUtilisateur(credentials.getUsername(), credentials.getPassword());
 		if (user == null) {
 			Response.status(HttpResponseCodes.SC_UNAUTHORIZED).entity("Wrong credentials").build();
