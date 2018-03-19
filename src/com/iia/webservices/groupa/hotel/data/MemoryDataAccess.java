@@ -58,15 +58,12 @@ public class MemoryDataAccess implements DataAccess, Serializable {
 	@Override
 	public Hotel getHotel(int idHotel) {
 		Hotel resultat = null;
-		//boucle avec iterator pour parcourir la Hashlist;
-		Iterator<Hotel> it = _hotels.iterator();
-		while(it.next() != null) {
-			// Comparaison dans la boucle if de l'hotel actuel avec celui de l'hotel - id en argument
-			if(it.next().getId()==idHotel)
-				resultat=it.next();
+		for (Hotel hotel : _hotels) {
+			if (hotel.getId() == idHotel) {
+				resultat = hotel;
+			}
 		}
 		return resultat;
-
 	}
 	
 	@Override
