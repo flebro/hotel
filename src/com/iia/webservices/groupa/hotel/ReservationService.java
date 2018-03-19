@@ -33,8 +33,13 @@ public class ReservationService {
 	@Path("/")
 	@Consumes("application/json")
 	@Produces("application/json")
+	/**
+	 * Permet de réserver un hôtel
+	 * @param reservationDemande est un objet de réservation allégée contenant deux dates en string (AAAA-MM-JJ) et un id d'hôtel (Integer)
+	 * @return Code Réponse OK 
+	 */
 	public Response ReservationHotel(ReservationDemande reservationDemande){
-		// on test chaque paramï¿½tre avant de construire notre rï¿½sa
+		// on test chaque paramètre avant de construire notre résa
 		if(reservationDemande.getDateDebDemande() == null || 
 				reservationDemande.getDateFinDemande() == null || 
 				reservationDemande.getHotelIDDemande() == null) {
@@ -69,6 +74,12 @@ public class ReservationService {
 	@GET 
 	@Path("/")
 	@Produces("application/json")
+	/**
+	 * Permet de lister les réservations , les paramètres sont facultatifs. Si ils ne sont pas renseignés, retourne l'intégralité des réservations.
+	 * @param hotelId Id de l'hôtel de type Integer
+	 * @param dateStr Date de vision en string au format AAAA-MM-JJ
+	 * @return une liste de réservation correspondant aux paramètres spécifiés.Si ils ne sont pas renseignés, retourne l'intégralité des réservations.
+	 */
 	public Response listeReservation(@QueryParam("hotelId") Integer hotelId, @QueryParam("date") String dateStr ){
 		LocalDate date = null;
 		Hotel hotel = null;

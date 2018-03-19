@@ -21,7 +21,11 @@ public class LoginService {
 	private DataAccess dataAccess;
 	@Inject
 	private SecurityService securityService;
-	
+	/**
+	 * Permet d'authentifier un utilisateur
+	 * @param credentials objet credentials (composé du username et password)
+	 * @return Code réponse ok et un token
+	 */
 	@POST 
 	@Path("/")
 	@Consumes("application/json")

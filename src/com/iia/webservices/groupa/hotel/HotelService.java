@@ -15,10 +15,17 @@ import org.jboss.resteasy.util.HttpResponseCodes;
 import com.iia.webservices.groupa.hotel.data.DataAccess;
 import com.iia.webservices.groupa.hotel.model.Hotel;
 import com.iia.webservices.groupa.hotel.utils.DateUtil;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+
 import com.iia.webservices.groupa.hotel.security.ProtectedResource;
 
 @Path("/hotels") @ProtectedResource
-public class HotelService {		
+@Produces("application/json")
+@Api(value = "/hotels", description = "Méthodes sur Service Hôtel")
+public class HotelService  {		
 	
 	@Inject
 	private DataAccess dataAccess;
@@ -27,8 +34,16 @@ public class HotelService {
 	
 	@GET
 	@Path("/{id}")
-	@Produces("application/json")
-	public Response getHotel(@PathParam("id") int id) {
+	
+	@ApiOperation(value = "Obtenir un hôtel à partir de son id.",
+	    notes = "Si l'id est inconnu retourne un code erreur http",
+	    response = Hotel.class)
+	/**
+	 * Obtenir un hôtel à partir de son id.
+	 * @param id Id est un entier correspondant au code de l'hôtel.
+	 * @return 	L'objet hôtel de l'id spécifié.
+	 */
+	public Response getHotel(@ApiParam(value = "id de l'hôtel", required = true) @PathParam("id") int id) {
 		Hotel hotel = dataAccess.getHotel(id);
 		if (hotel == null) {
 			return Response.status(HttpResponseCodes.SC_NOT_FOUND).build();
@@ -39,7 +54,15 @@ public class HotelService {
 	
 	@GET 
 	@Path("/")
-	@Produces("application/json")
+	@ApiOperation(value = "Fournit la liste des hôtels disponibles aux dates spécifiées",
+    notes = "Si les paramètres sont nuls, fournit la liste complète des hôtels disponibles",
+    response = Hotel.class)
+	/**
+	 * Fournit la liste des hôtels disponibles aux dates spécifiées
+	 * @param dateDeb Date de début de séjour au format AAAA-MM-JJ [String]
+	 * @param dateFin Date de fin de séjour au format AAAA-MM-JJ [String]
+	 * @return
+	 */
 	public Response listeHotelDisponible(@QueryParam("dateDeb") String dateDeb,@QueryParam("dateFin") String dateFin){
 		if (dateDeb == null || dateFin== null) {
 			return Response.ok().entity(dataAccess.listHotels()).build();

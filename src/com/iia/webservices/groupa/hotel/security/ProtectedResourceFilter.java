@@ -23,7 +23,7 @@ public class ProtectedResourceFilter implements ContainerRequestFilter {
 
 	@Override
 	public void filter(ContainerRequestContext requestContext) throws IOException {
-		if (!ACTIVE_SECURITY) {
+		if (ACTIVE_SECURITY) {
 			String authorizationHeader = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
 
 			// Validate the Authorization header
