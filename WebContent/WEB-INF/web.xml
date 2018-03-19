@@ -18,7 +18,8 @@
 		</init-param>
 		<init-param>
 			<param-name>swagger.api.basepath</param-name>
-			<param-value>http://localhost:8080/hotel</param-value>
+			<!-- <param-value>http://localhost:8080/hotel</param-value> -->
+			<param-value>http://192.168.43.191:8080/hotel</param-value>
 		</init-param>
 		<load-on-startup>2</load-on-startup>
 	</servlet>
