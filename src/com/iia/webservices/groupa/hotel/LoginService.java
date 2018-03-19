@@ -11,10 +11,16 @@ import org.jboss.resteasy.util.HttpResponseCodes;
 
 import com.iia.webservices.groupa.hotel.data.DataAccess;
 import com.iia.webservices.groupa.hotel.dos.Credentials;
+import com.iia.webservices.groupa.hotel.model.Hotel;
 import com.iia.webservices.groupa.hotel.model.Utilisateur;
 import com.iia.webservices.groupa.hotel.security.SecurityService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+
 @Path("/login")
+@Api(value = "/login", description = "Méthodes pour le service Login")
 public class LoginService {
 	
 	@Inject
@@ -30,12 +36,15 @@ public class LoginService {
 	@Path("/")
 	@Consumes("application/json")
 	@Produces("text/plain")
+	@ApiOperation(value = "Méthode pour l'authentification auprès de l'API",
+    notes = "Retourne un token",
+    response = Utilisateur.class)
 	/**
 	 * Cette methode parmet l'authentification auprÃ¨s de l'API
 	 * @param credentials objet contenant le username et le password de l'utilisateur
 	 * @return token
 	 */
-	public Response authenticate(Credentials credentials){
+	public Response authenticate(@ApiParam(value = "Credentials objet contenant le username et le password de l'utilisateur.", required = true) Credentials credentials){
 		Utilisateur user = dataAccess.getUtilisateur(credentials.getUsername(), credentials.getPassword());
 		if (user == null) {
 			Response.status(HttpResponseCodes.SC_UNAUTHORIZED).entity("Wrong credentials").build();

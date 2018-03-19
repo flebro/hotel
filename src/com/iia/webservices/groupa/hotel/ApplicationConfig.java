@@ -26,11 +26,9 @@ public class ApplicationConfig extends Application {
     public Set<Class<?>> getClasses() {
         Set<Class<?>> resources = new HashSet<>();
 
-        //resources.add(FirstResource.class);
-        //resources.add(SecondResource.class);
-        //...
-    
         resources.add(com.iia.webservices.groupa.hotel.HotelService.class);
+        resources.add(com.iia.webservices.groupa.hotel.LoginService.class);
+        resources.add(com.iia.webservices.groupa.hotel.ReservationService.class);
         
 
         resources.add(io.swagger.jaxrs.listing.ApiListingResource.class);

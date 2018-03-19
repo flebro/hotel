@@ -34,7 +34,6 @@ public class HotelService  {
 	
 	@GET
 	@Path("/{id}")
-	
 	@ApiOperation(value = "Obtenir un hôtel à partir de son id.",
 	    notes = "Si l'id est inconnu retourne un code erreur http",
 	    response = Hotel.class)
@@ -51,19 +50,19 @@ public class HotelService  {
 			return Response.ok().entity(hotel).build();
 		}
 	}
-	
-	@GET 
-	@Path("/")
-	@ApiOperation(value = "Fournit la liste des hôtels disponibles aux dates spécifiées",
-    notes = "Si les paramètres sont nuls, fournit la liste complète des hôtels disponibles",
-    response = Hotel.class)
 	/**
 	 * Fournit la liste des hôtels disponibles aux dates spécifiées
 	 * @param dateDeb Date de début de séjour au format AAAA-MM-JJ [String]
 	 * @param dateFin Date de fin de séjour au format AAAA-MM-JJ [String]
 	 * @return
 	 */
-	public Response listeHotelDisponible(@QueryParam("dateDeb") String dateDeb,@QueryParam("dateFin") String dateFin){
+	@GET 
+	@Path("/")
+	@ApiOperation(value = "Fournit la liste des hôtels disponibles aux dates spécifiées",
+    notes = "Si les paramètres sont nuls, fournit la liste complète des hôtels disponibles",
+    response = Hotel.class,
+    nickname="listeHotelDisponible")
+	public Response listeHotelDisponible(@ApiParam(value = "Date début", required = false) @QueryParam("dateDeb") String dateDeb,@ApiParam(value = "Date Fin", required = false) @QueryParam("dateFin") String dateFin){
 		if (dateDeb == null || dateFin== null) {
 			return Response.ok().entity(dataAccess.listHotels()).build();
 		} else {
