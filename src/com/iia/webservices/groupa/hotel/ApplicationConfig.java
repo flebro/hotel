@@ -8,6 +8,9 @@ import javax.ws.rs.core.Application;
 
 import io.swagger.jaxrs.config.BeanConfig;
 
+import io.swagger.jaxrs.config.BeanConfig;
+import io.swagger.jaxrs.listing.*;
+
 @ApplicationPath("/rest")
 public class ApplicationConfig extends Application {
     public ApplicationConfig() {

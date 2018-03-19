@@ -88,7 +88,7 @@ public class MemoryDataAccess implements DataAccess, Serializable {
 	public List<Reservation> listReservations(LocalDate date, Hotel hotel)
 	{
 		//Par défaut on charge toutes les réservations, on allégera cette liste en fonction des crit�res en param�tre
-		List<Reservation> lesReservations= new ArrayList<>();
+		List<Reservation> lesReservations= new ArrayList<>(_reservations);
 		// boucle pour parcourir chaque r�sa
 		if (date != null) {
 			for (Reservation reservation : lesReservations) {

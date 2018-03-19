@@ -15,7 +15,7 @@ import com.iia.webservices.groupa.hotel.security.exception.AuthorizationExceptio
 @ProtectedResource
 public class ProtectedResourceFilter implements ContainerRequestFilter {
 
-	private static final boolean ACTIVE_SECURITY = false;
+	private static final boolean ACTIVE_SECURITY = true;
 	private static final String AUTHENTICATION_SCHEME = "Bearer";
 
 	@Inject
