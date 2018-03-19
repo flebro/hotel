@@ -23,7 +23,12 @@ import com.iia.webservices.groupa.hotel.model.Reservation;
 import com.iia.webservices.groupa.hotel.security.ProtectedResource;
 import com.iia.webservices.groupa.hotel.utils.DateUtil;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+
 @Path("/reservations") @ProtectedResource
+@Api(value = "/reservations", description = "Méthodes sur Service Reservation")
 public class ReservationService {
 	
 	@Inject
@@ -35,8 +40,11 @@ public class ReservationService {
 	@Path("/")
 	@Consumes("application/json")
 	@Produces("application/json")
-	public Response ReservationHotel(ReservationDO reservationDemande){
-		// on test chaque paramï¿½tre avant de construire notre rï¿½sa
+	@ApiOperation(value = "Réserver un hôtel.",
+    notes = "Si un paramètre est manquant retourne un code erreur http",
+    response = Response.class)
+	public Response ReservationHotel(@ApiParam(value = "RéservationDo comprenant une date début, date de fin en string yyyy-mm-dd, et un id hôtel", required = true) ReservationDO reservationDemande){
+		// on test chaque paramètre avant de construire notre résa
 		if(reservationDemande.getDateDebut() == null || 
 				reservationDemande.getDateFin() == null || 
 				reservationDemande.getHotel() == null) {
@@ -77,7 +85,10 @@ public class ReservationService {
 	 * @param dateStr Date de vision en string au format AAAA-MM-JJ
 	 * @return une liste de rï¿½servation correspondant aux paramï¿½tres spï¿½cifiï¿½s.Si ils ne sont pas renseignï¿½s, retourne l'intï¿½gralitï¿½ des rï¿½servations.
 	 */
-	public Response listeReservation(@QueryParam("hotelId") Integer hotelId, @QueryParam("date") String dateStr ){
+	@ApiOperation(value = "Obtenir une liste de réservation.",
+    notes = "Permet de lister les réservations , les paramètres sont facultatifs. Si ils ne sont pas renseignés, retourne l'intégralité des réservations",
+    response = Response.class)
+	public Response listeReservation(@ApiParam(value = "id de l'hôtel", required = false) @QueryParam("hotelId") Integer hotelId, @ApiParam(value = "Date de vision", required = false) @QueryParam("date") String dateStr ){
 		LocalDate date = null;
 		Hotel hotel = null;
 		

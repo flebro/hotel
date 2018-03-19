@@ -18,7 +18,7 @@ public class ApplicationConfig extends Application {
         beanConfig.setVersion("1.0.2");
         beanConfig.setSchemes(new String[]{"http"});
         /*beanConfig.setHost("localhost:8080");*/
-        beanConfig.setHost("192.168.43.191:8080");
+        beanConfig.setHost("192.168.100.146:8080");
         beanConfig.setBasePath("/hotel/rest");
         beanConfig.setResourcePackage("com.iia.webservices.groupa.hotel");
         beanConfig.setScan(true);
